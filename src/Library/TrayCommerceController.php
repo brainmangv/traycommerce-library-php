@@ -10,6 +10,7 @@ class TrayCommerceController {
     private $token;
     
     public static $instance;
+    public static $curl;
     
     private $eventsOnBeforeRefreshToken = array();
     private $eventsOnRefreshedToken = array();
@@ -34,6 +35,15 @@ class TrayCommerceController {
         }
         
         return self::$instance;
+    }
+    
+    public static function getCurl()
+    {
+        if (!isset(self::$curl)) {
+            self::$curl = curl_init();
+        }
+
+        return self::$curl;
     }
     
     public function checkValidToken(){
