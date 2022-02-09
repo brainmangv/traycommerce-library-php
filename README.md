@@ -4,7 +4,7 @@ SDK para manipulação da API da Tray em PHP
 #### Como instalar - Via composer
 
 ```bash
-$ composer require traycommerce/traycommerce
+$ composer require brainmangv/traycommerce
 ```
 
 #### Exemplo para gerar autorizar a aplicação
