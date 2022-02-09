@@ -1,8 +1,8 @@
 {
-    "name": "traycommerce/traycommerce",
+    "name": "brainmangv/traycommerce",
     "description": "Library da api privada da Tray",
     "keywords": ["api", "library", "psr-3", "traycommerce"],
-    "homepage": "https://github.com/weslleyceresa/traycommerce-library-php",
+    "homepage": "https://github.com/brainmangv/traycommerce-library-php",
     "type": "library",
     "license": "MIT",
     "authors": [
