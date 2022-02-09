@@ -19,14 +19,14 @@ class HttpTray {
     }
 
     public function setBaseUrlApi($baseUrlApi) {
-        return $this->base_url_api = $baseUrlApi . "/";
+        return $this->base_url_api = $baseUrlApi;
     }
 
     public function post($action, $params = array(), $query = array()) {
         if (empty($this->base_url_api))
             throw new TrayCommerceException("[TrayCommerce][post]", "base_url_api deve ser fornecido.");
-
-        return $this->curlPost(
+		
+		return $this->curlPost(
             $this->base_url_api . $action, $params, $query, "POST"
         );
     }
@@ -100,13 +100,16 @@ class HttpTray {
                
         $this->triggerEvent("before");
 
-        $ch = curl_init();
+        //$ch = curl_init();
+        $ch=TrayCommerceController::getCurl();
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
+        //curl_setopt($ch, CURLOPT_VERBOSE, true);
         
-        if($type == "POST"){
+		if($type == "POST"){
             $postParams = http_build_query($postParams);
+			curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/x-www-form-urlencoded']);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $postParams);
         }
         
@@ -124,7 +127,7 @@ class HttpTray {
         $errCode = curl_errno($ch);
         $errText = curl_error($ch);
 
-        curl_close($ch);
+        //curl_close($ch);
 
         $this->triggerEvent("after");
 
@@ -132,7 +135,7 @@ class HttpTray {
             "responseText" => $jsonRetorno,
             "code" => $code,
             "data" => $resposta,
-            "err" => GlobalHelper::getCurlErrorByCode($errCode) . " URL: " . $url . " - Body: " . json_encode($postParams)
+            "err" => GlobalHelper::getCurlErrorByCode($errCode)
         );
     }
 
@@ -141,7 +144,8 @@ class HttpTray {
 
         $this->triggerEvent("before");
 
-        $ch = curl_init();
+        //$ch = curl_init();
+        $ch=TrayCommerceController::getCurl();
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
@@ -164,7 +168,7 @@ class HttpTray {
         $errCode = curl_errno($ch);
         $errText = curl_error($ch);
 
-        curl_close($ch);
+        //curl_close($ch);
 
         $this->triggerEvent("after");
 
@@ -172,7 +176,7 @@ class HttpTray {
             "responseText" => $jsonRetorno,
             "code" => $code,
             "data" => $resposta,
-            "err" => GlobalHelper::getCurlErrorByCode($errCode) . " URL: " . $url . " - Body: " . json_encode($postParams)
+            "err" => GlobalHelper::getCurlErrorByCode($errCode)
         );
     }
 }
