@@ -273,7 +273,33 @@ class Produto extends BaseEndpoints{
 
         throw new TrayCommerceException("[Produto][atualizarDadosMarca]", "(".$resposta["err"].") - ".$resposta["responseText"], $resposta["code"]);
     }
-    
+    /**
+     * 
+     * @param array $filter
+     * @return object
+     * @throws Exception
+     */
+    function atualizarDadosByFilter(array $filter, $data = array())
+    {
+
+        $resposta = $this->listagem($filter);
+        if ($resposta->Products) {
+            $productId = $resposta->Products[0]->Product->id;
+
+            $this->trayCommerceController->checkValidToken();
+
+            $query = array(
+                "access_token" => $this->trayCommerceController->getToken()->getAccess_token()
+            );
+            $resposta = $this->put(self::uri . $productId, $data, $query);
+
+            if (GlobalHelper::success($resposta["code"])) {
+                return $resposta["data"];
+            }
+
+            throw new TrayCommerceException("[Produto][atualizarDados]", "(" . $resposta["err"] . ") - " . $resposta["responseText"], $resposta["code"]);
+        }
+    }
     /**
      * 
      * @param int $brandId
